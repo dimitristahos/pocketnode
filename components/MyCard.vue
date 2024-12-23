@@ -5,7 +5,17 @@
   import { Label } from "@/components/ui/label";
   import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-  defineProps<{ post: object }>();
+  const props = defineProps<{ post: object }>();
+
+  const excerpt = computed(() => {
+    return (
+      props.post.excerpt ||
+      props.post.content
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .substring(0, 200)
+    );
+  });
 </script>
 
 <template>
@@ -15,7 +25,7 @@
         <CardHeader>
           <CardTitle>{{ post.title }}</CardTitle>
           <CardDescription>
-            <div v-html="post.content"></div>
+            <div>{{ excerpt }}</div>
           </CardDescription>
         </CardHeader>
       </Card>
